@@ -1,15 +1,17 @@
 import React from 'react';
 import { useAppContext } from '../../contect/context';
-import { Status } from '../../hooks/api';
+import useApi, { Status } from '../../hooks/api';
 import Error from '../error/Error';
 
 const Recipe = () => {
-  const { status, recipe } = useAppContext()
-console.log('dg')
+  const { recipe } = useAppContext()
+  const { response } = useApi()
+
+  console.log(recipe)
   return (
     <div className="recipe">
-
-      {status === Status.IDLE &&
+      {
+        !!recipe ||
         <div className="message">
           <div>
             <svg>
@@ -20,7 +22,6 @@ console.log('dg')
         </div>
       }
 
-      {status === Status.REJECTED && <Error />}
 
       {recipe &&
         <>

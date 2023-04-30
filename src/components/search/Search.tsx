@@ -1,25 +1,29 @@
 import React from 'react';
 import { useAppContext } from '../../contect/context';
 import { fetchQuery } from '../../api/client';
-import { Status } from '../../hooks/api';
+import useApi, { Status } from '../../hooks/api';
 
 const Search = () => {
   const [search, setSearch] = React.useState('');
-  const { run, status } = useAppContext()
+  const { setState } = useAppContext()
+  const { run, response } = useApi()
 
   const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
-
-    await run(fetchQuery(search))
-
-    if (status !== Status.REJECTED) {
+    try {
+      const data = await run(fetchQuery(search))
       setSearch('')
+      setState((s) => ({ ...s, ...data }))
+    } catch (err) {
+
     }
   }
 
   return (
     <form
-      onSubmit={handleSearchSubmit}
+      onSubmit={(evt) => {
+        handleSearchSubmit(evt)
+      }}
       className="search">
       <input
         type="text"

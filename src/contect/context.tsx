@@ -5,28 +5,23 @@ import useApi, { Status } from "../hooks/api";
 export type IAppContext = {
   recipes: Recipe | null;
   recipe: DetaledRecipe | null,
-  status: typeof Status[keyof typeof Status]
-  run: Pick<ReturnType<typeof useApi>, 'run'>['run']
+  setState: React.Dispatch<React.SetStateAction<Partial<IAppContext>>>
 };
 
-const ititialState = {
+const initialState = {
   recipes: null,
   recipe: null,
-  status: Status.IDLE
 }
 
-const AppContext = createContext<Partial<IAppContext>>(ititialState)
+const AppContext = createContext<Partial<IAppContext>>(initialState)
 
 const useAppContext = () => useContext(AppContext) as IAppContext;
 
 function AppContextProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<Partial<IAppContext>>({...ititialState})
-  const { response, run, } = useApi(setState)
-
-  const status = response.status
+  const [state, setState] = useState<Partial<IAppContext>>(initialState)
 
   return (
-    <AppContext.Provider value={{...state, status, run }}>
+    <AppContext.Provider value={{ ...state, setState }}>
       {children}
     </AppContext.Provider>
   );

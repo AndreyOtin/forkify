@@ -34,7 +34,7 @@ function apiReducer(state: InitialState, action: Action) {
   }
 }
 
-export default function useApi(cb: React.Dispatch<React.SetStateAction<Partial<IAppContext>>>) {
+export default function useApi() {
   const [response, setResponse] = useReducer(apiReducer, { status: Status.IDLE, data: null, error: null });
 
   const run = (promise: Promise<Partial<IAppContext>>) => {
@@ -48,7 +48,6 @@ export default function useApi(cb: React.Dispatch<React.SetStateAction<Partial<I
       .then(
         (data) => {
           setResponse({ type: Status.RESOLVED, data });
-          cb((s) => ({ ...s, ...data }))
         }, (error) => {
           setResponse({ type: Status.REJECTED, error });
         });
