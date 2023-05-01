@@ -35,6 +35,7 @@ function apiReducer(state: InitialState, action: Action) {
 }
 
 export default function useApi() {
+export default function useApi() {
   const [response, setResponse] = useReducer(apiReducer, { status: Status.IDLE, data: null, error: null });
 
   const run = (promise: Promise<Partial<IAppContext>>) => {

@@ -23,7 +23,9 @@ const Search = () => {
 
   return (
     <form
-      onSubmit={handleSearchSubmit}
+      onSubmit={(evt) => {
+        handleSearchSubmit(evt)
+      }}
       className="search">
       <input
         type="text"

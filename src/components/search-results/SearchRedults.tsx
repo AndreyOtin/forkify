@@ -71,6 +71,7 @@ const SearchRedults = () => {
         as your own.
       </p>
     </div >
+    </div >
   );
 };
 
