@@ -8,7 +8,7 @@ const fetchQuery = async (query: string) => {
     }
   })
 
-  return { recipes };
+  return recipes
 }
 
 
@@ -19,7 +19,7 @@ const fetchRecipe = async (id: string) => {
     }
   })
 
-  return { recipe }
+  return recipe
 }
 
 export { fetchQuery, fetchRecipe }

@@ -13,6 +13,7 @@ const createAPI = () => {
 
   api.interceptors.response.use((response) => response, (error: AxiosError<{ error: string }>) => {
     toast.error(error.response?.data.error, { toastId: error.response?.status })
+    throw error
   })
 
   return applyCaseMiddleware(api, { ignoreParams: true, ignoreHeaders: true })

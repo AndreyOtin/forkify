@@ -1,81 +1,61 @@
-import React, { useState } from 'react';
-import { useAppContext } from '../../contect/context';
+import { useState } from 'react';
+import { useAppContext } from '../../context/context';
 import { Status } from '../../hooks/api';
 import { Spinner } from '../spinner/Spinner';
-import { fetchRecipe } from '../../api/client';
+import { Card } from '../card/Card';
 
 const maxElemntsPerPage = 10;
 
 const SearchRedults = () => {
-  const { status, recipes, run } = useAppContext()
+  const { status, recipes } = useAppContext()
   const [count, setCount] = useState(maxElemntsPerPage)
-  console.log(recipes)
 
-  // if (status === Status.PENDING) {
-  //   return <Spinner />
-  // }
-
+  if (status.recipes === Status.PENDING) {
+    return <Spinner isActive />
+  }
 
   const isForward = (recipes?.count || 0) - count > 0;
   const isBack = (recipes?.count || 0) - count < maxElemntsPerPage;
 
-  const handleRecipeClick = (id: string, evt: React.MouseEvent) => {
-    evt.preventDefault()
-    run(fetchRecipe(id))
-  }
 
   return (
     <div className="search-results">
-      {status === Status.IDLE ||
+      {
+        !(status.recipes === Status.IDLE || status.recipes === Status.REJECTED) &&
         <>
           <ul className="results">
             {recipes?.recipes
               .slice(count - maxElemntsPerPage, count)
               .map((recipe) => (
-                <li
-                  key={recipe.recipeId}
-                  className="preview">
-                  <a
-                    onClick={(evt) => handleRecipeClick(recipe.recipeId, evt)}
-                    className="preview__link preview__link--active"
-                    href={`#${recipe.recipeId}`}
-                  >
-                    <figure className="preview__fig">
-                      <img src={`${recipe.imageUrl}`} alt="Test" />
-                    </figure>
-                    <div className="preview__data">
-                      <h4 className="preview__title">{recipe.title}</h4>
-                      <p className="preview__publisher">{recipe.publisher}</p>
-                      <div className="preview__user-generated">
-                        <svg>
-                          <use href="/img/icons.svg#icon-user"></use>
-                        </svg>
-                      </div>
-                    </div>
-                  </a>
-                </li>
+                <Card key={recipe.recipeId} recipe={recipe} />
               ))}
           </ul>
 
           <div style={{ marginTop: 'auto' }} className="pagination">
-            {isBack &&
+            {
+              isBack &&
               <button
                 onClick={() => setCount((count) => count - maxElemntsPerPage)}
-                className="btn--inline pagination__btn--prev">
+                className="btn--inline pagination__btn--prev"
+              >
                 <svg className="search__icon">
                   <use href="/img/icons.svg#icon-arrow-left"></use>
                 </svg>
                 <span>Page {Math.floor(count / maxElemntsPerPage) - 1}</span>
-              </button>}
-            {isForward &&
+              </button>
+            }
+            {
+              isForward &&
               <button
                 onClick={() => setCount((count) => count + maxElemntsPerPage)}
-                className="btn--inline pagination__btn--next">
+                className="btn--inline pagination__btn--next"
+              >
                 <span>Page {Math.floor(count / maxElemntsPerPage) + 1}</span>
                 <svg className="search__icon">
                   <use href="/img/icons.svg#icon-arrow-right"></use>
                 </svg>
-              </button>}
+              </button>
+            }
           </div>
         </>
       }
@@ -90,7 +70,7 @@ const SearchRedults = () => {
         >. Use for learning or your portfolio. Don't use to teach. Don't claim
         as your own.
       </p>
-    </div>
+    </div >
   );
 };
 

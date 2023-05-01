@@ -1,13 +1,22 @@
 import * as React from 'react';
-type Props = {
 
+type Props = {
+  children?: React.ReactNode;
+  isActive: boolean;
 };
+
 export function Spinner(props: Props) {
   return (
-    <div className="spinner">
-      <svg>
-        <use href="/img/icons.svg#icon-loader"></use>
-      </svg>
-    </div>
+    <>
+      {props.isActive
+        ?
+        <div className="spinner">
+          <svg>
+            <use href="/img/icons.svg#icon-loader"></use>
+          </svg>
+        </div>
+        : props.children
+      }
+    </>
   );
 };

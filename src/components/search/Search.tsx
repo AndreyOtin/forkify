@@ -1,19 +1,23 @@
 import React from 'react';
-import { useAppContext } from '../../contect/context';
+import { ActionType, useAppContext } from '../../context/context';
 import { fetchQuery } from '../../api/client';
-import { Status } from '../../hooks/api';
 
 const Search = () => {
   const [search, setSearch] = React.useState('');
-  const { run, status } = useAppContext()
+  const { dispatch } = useAppContext()
 
   const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
 
-    await run(fetchQuery(search))
+    dispatch({ type: ActionType.FetchRecipes })
 
-    if (status !== Status.REJECTED) {
+    try {
+      const recipes = await fetchQuery(search)
+
+      dispatch({ type: ActionType.FetchRecipesResolved, data: recipes })
       setSearch('')
+    } catch (error) {
+      dispatch({ type: ActionType.FetchRecipesRejected })
     }
   }
 
@@ -24,7 +28,7 @@ const Search = () => {
       <input
         type="text"
         className="search__field"
-        placeholder="Search over 1,000,000 recipes..."
+        placeholder="Введите рецепт например Pizza"
         onChange={(evt) => setSearch(evt.target.value)}
         value={search}
       />
