@@ -66,11 +66,8 @@ const SearchRedults = () => {
           className="twitter-link"
           target="_blank"
           href="https://twitter.com/jonasschmedtman" rel="noreferrer"
-        >Jonas Schmedtmann</a
-        >. Use for learning or your portfolio. Don't use to teach. Don't claim
-        as your own.
+        >Jonas Schmedtmann</a>
       </p>
-    </div >
     </div >
   );
 };
