@@ -1,4 +1,4 @@
-import React, { useReducer, Dispatch } from 'react';
+import { useReducer } from 'react';
 import { AxiosError } from 'axios'
 import { IAppContext } from '../context/context';
 
